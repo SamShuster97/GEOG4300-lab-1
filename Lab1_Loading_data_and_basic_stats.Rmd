@@ -55,44 +55,72 @@ kable(head(daymet_data))
 
 ***Question 1 (4 points):** After loading the file into R, pick TWO variables and determine whether they are nominal, ordinal, interval, and ratio data. Justify the classification you chose in a sentence or two for each one.*
 
-{Your response goes here.}
+{The CTY_NAME variable is a nominal variable. The only characteristic it has is a name which is a qualitative variable. The second variable is REGION. REGION is a categorical variable because it is a qualitative variable that has important differences within its own class i.e. SE is different than NW; not better or worse, just different.}
 
-There are a lot of observations here, 413,820 to be exact. To get a better grasp on it, we can use group_by and summarise in the tidyverse package, which we covered in class. This will allow us to identify the mean value for each year by county across the study period.
+There are a lot of observations here, 413,820 to be exact. To get a better grasp on it, we can use group_by and summarize in the tidyverse package, which we covered in class. This will allow us to identify the mean value for each year by county across the study period.
 
-***Question 2 (4 points):** Use group_by and summarise to calculate the mean minimum temperature for each year by county, also including State and Region as grouping variables. Your resulting dataset should show the value of tmin for each county in each year. Use the kable and head functions as shown above to call the resulting table.*
+***Question 2 (4 points):** Use group_by and summarize to calculate the mean minimum temperature for each year by county, also including State and Region as grouping variables. Your resulting dataset should show the value of tmin for each county in each year. Use the kable and head functions as shown above to call the resulting table.*
 
 ```{r}
-#Your code goes here.
-```
+county_temp_min <- daymet_data %>%
+  group_by(year, CTY_NAME, State, Region) %>%
+  summarise(tmin_avg=mean(tmin))%>%
+  mutate(tmin_avg=(round(tmin_avg,digits = 1)))
 
+head(county_temp_min)
+```
 
 ***Question 3 (2 points):** What if we were only interested in the South Region? Filter the original data frame (daymet_data) to just include counties in this region. Then use group_by and summarise again to calculate the mean minimum temperature by year *for each state.* For 1 point extra credit, use the round function to include only 1 decimal point. You can type ?round in the console to find documentation on this function. Use kable and head to call the first few lines of the resulting table*
 
 ```{r}
-#Your code goes here.
+daymet_data_south <- all_of(daymet_data) %>%
+  group_by(year,State, Region) %>%
+  filter(Region == "South Region")%>%
+  summarise(t_avg=mean(tmin))%>%
+  mutate(t_avg=(round(t_avg,digits = 2)))
 ```
 
 
 ***Question 4 (2 points):** To visualize the trends, we could use ggplot to visualize change in mean temperature over time. Create a line plot (geom_line) showing the state means you calculated in question 3. Use the color parameter to show separate colors for each state.*
 
 ```{r}
-#Your code goes here.
+ggplot(data = daymet_data_south, aes(x = year , y = t_avg, color = State ))+
+  geom_line()+
+  xlab("Year")+
+  ylab("Mean Temperature(Celcius)")
+
+  
 ```
 
 
 ***Question 5 (3 points):** If you wanted to look at these data as a table, you'd need to have it in wide format. Use the pivot_wider function to create a wide format version of the data frame you created in question 3. In this case, the rows should be states, the columns should be the years, and the data in those columns should be mean minimum temperatures. Then call the whole table using kable.*
 
 ```{r}
-#Your code goes here.
+daymet_data_south_pivot<-daymet_data_south%>%
+  pivot_wider(names_from = year, values_from = t_avg)
+
+kable(head(daymet_data_south_pivot))
 ```
 
 
 ***Question 6 (4 points):** Returning to the original dataset, create a data frame that shows the mean *maximum* temperature and mean precipitation for *all* states in 2015, also grouping by region. Then use ggplot to create a scatterplot (geom_point) for these two variables, coloring the points using the region variable.*
 
 ```{r}
-#Your code goes here.
+#x should be min temp, y should be precip, group should be state, and color should be region
+
+max_temp_prcp<-daymet_data %>%  #Dataframe creation
+  filter(year == 2015)%>%
+  group_by(year, State, Region)%>%
+  #Calculation of averages
+  summarise(tmax_avg = mean(tmax), prcp_avg = mean(prcp))
+
+ggplot(data = max_temp_prcp, 
+       aes(x = tmax_avg , y = prcp_avg))+
+  geom_point(aes(color = Region))+
+  xlab("Mean Maximum Temperature")+
+  ylab("Mean Precipitation")
 ```
 
 ***Question 7 (2 points)** In the space below, explain what each function in your code for question 6 does to the dataset in plain English. 
 
-{Your response here.}
+{To begin with, the data is initially read in from a csv file and turned into a data frame. Upon creating the data frame, the kable command calls forth the data frame so that it can be previewed. From there, a second data frame is created based off of the first one except this time, the data contained in it is more refined. This is done by grouping by particular variables; in this case county name, state, region, and year. After refining the variables we want to look at, a new variable is created called tmin_avg. This variable takes the mean of the values under the tmin column. What we're left with is a neat data frame that contains only the values from the original data frame pertaining to year, county name, state, region, and the new variable, tmin_avg. At the end of that code chunk, the head command calls forth the top portion of the data frame for previewing purposes. The next data frame created uses the daymet_data data frame to narrow the information processed for only the southern region. Pictured in that data frame are the year, state, region, and t_avg variables. From there, I plotted the data from that frame using the ggplot command with geom_line in order to create a line graph that is colored according to state. xlab is used to label the x axis and ylab is used to label the y axis. The next code chunk transforms the daymet_data_south data frame by pivoting it using the pivot_wider command so that the data can be viewed more easily. The final data frame created takes the daymet_data frame and refines the variables shown so that only year, state, region and two new variables are shown. The new variables are tmax_avg and prcp_avg. These variables are the mean values recorded according to the tmax and prcp variables. The final lines of code merely plot that data into a scatter plot which shows the mean max temperature and mean precipitation according to region.}
