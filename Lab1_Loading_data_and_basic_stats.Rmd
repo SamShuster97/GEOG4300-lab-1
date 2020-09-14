@@ -67,7 +67,7 @@ county_temp_min <- daymet_data %>%
   summarise(tmin_avg=mean(tmin))%>%
   mutate(tmin_avg=(round(tmin_avg,digits = 1)))
 
-head(county_temp_min)
+kable(head(county_temp_min))
 ```
 
 ***Question 3 (2 points):** What if we were only interested in the South Region? Filter the original data frame (daymet_data) to just include counties in this region. Then use group_by and summarise again to calculate the mean minimum temperature by year *for each state.* For 1 point extra credit, use the round function to include only 1 decimal point. You can type ?round in the console to find documentation on this function. Use kable and head to call the first few lines of the resulting table*

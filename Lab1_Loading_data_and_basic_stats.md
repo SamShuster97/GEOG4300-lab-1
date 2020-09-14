@@ -95,19 +95,17 @@ county_temp_min <- daymet_data %>%
     ## `summarise()` regrouping output by 'year', 'CTY_NAME', 'State' (override with `.groups` argument)
 
 ``` r
-head(county_temp_min)
+kable(head(county_temp_min))
 ```
 
-    ## # A tibble: 6 x 5
-    ## # Groups:   year, CTY_NAME, State [6]
-    ##    year CTY_NAME  State          Region         tmin_avg
-    ##   <dbl> <chr>     <chr>          <chr>             <dbl>
-    ## 1  2005 Abbeville South Carolina South Region       10.4
-    ## 2  2005 Acadia    Louisiana      South Region       14.7
-    ## 3  2005 Accomack  Virginia       South Region        9.8
-    ## 4  2005 Ada       Idaho          West Region         4  
-    ## 5  2005 Adair     Iowa           Midwest Region      4  
-    ## 6  2005 Adair     Kentucky       South Region        7.6
+| year | CTY\_NAME | State          | Region         | tmin\_avg |
+| ---: | :-------- | :------------- | :------------- | --------: |
+| 2005 | Abbeville | South Carolina | South Region   |      10.4 |
+| 2005 | Acadia    | Louisiana      | South Region   |      14.7 |
+| 2005 | Accomack  | Virginia       | South Region   |       9.8 |
+| 2005 | Ada       | Idaho          | West Region    |       4.0 |
+| 2005 | Adair     | Iowa           | Midwest Region |       4.0 |
+| 2005 | Adair     | Kentucky       | South Region   |       7.6 |
 
 ***Question 3 (2 points):** What if we were only interested in the South
 Region? Filter the original data frame (daymet\_data) to just include
