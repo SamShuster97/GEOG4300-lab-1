@@ -126,6 +126,19 @@ daymet_data_south <- all_of(daymet_data) %>%
 
     ## `summarise()` regrouping output by 'year', 'State' (override with `.groups` argument)
 
+``` r
+kable(head(daymet_data_south))
+```
+
+| year | State                | Region       | t\_avg |
+| ---: | :------------------- | :----------- | -----: |
+| 2005 | Alabama              | South Region |  10.92 |
+| 2005 | Arkansas             | South Region |  10.20 |
+| 2005 | Delaware             | South Region |   8.06 |
+| 2005 | District of Columbia | South Region |   8.20 |
+| 2005 | Florida              | South Region |  15.56 |
+| 2005 | Georgia              | South Region |  11.26 |
+
 ***Question 4 (2 points):** To visualize the trends, we could use ggplot
 to visualize change in mean temperature over time. Create a line plot
 (geom\_line) showing the state means you calculated in question 3. Use

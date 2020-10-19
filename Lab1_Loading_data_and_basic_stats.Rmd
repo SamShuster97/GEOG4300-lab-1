@@ -78,6 +78,8 @@ daymet_data_south <- all_of(daymet_data) %>%
   filter(Region == "South Region")%>%
   summarise(t_avg=mean(tmin))%>%
   mutate(t_avg=(round(t_avg,digits = 2)))
+
+kable(head(daymet_data_south))
 ```
 
 
